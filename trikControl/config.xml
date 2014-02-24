@@ -82,7 +82,7 @@
 	     commands and handles motor specifics by itself. -->
 	<powerMotors>
 		<motor port="JM1" i2cCommandNumber="0x14" invert="false" />
-		<motor port="JM2" i2cCommandNumber="0x15" invert="false" />
+		<motor port="JM2" i2cCommandNumber="0x15" invert="true" />
 		<motor port="M1" i2cCommandNumber="0x16" invert="false" />
 		<motor port="JM3" i2cCommandNumber="0x17" invert="false" />
 	</powerMotors>

@@ -120,6 +120,9 @@ Brick::Brick(QThread &guiThread, QString const &configFilePath)
 			);
 
 	mGamepad = new Gamepad(mConfigurer->gamepadPort());
+
+	connect(&mWaitingTimer, SIGNAL(timeout()), this, SLOT(stopWaiting()));
+	mWaitingTimer.setSingleShot(true);
 }
 
 Brick::~Brick()
@@ -170,6 +173,7 @@ void Brick::stop()
 
 	mLed->red();
 	mDisplay.hide();
+	stopWaiting();
 }
 
 Motor *Brick::motor(QString const &port)
@@ -257,9 +261,12 @@ Gamepad* Brick::gamepad()
 	return mGamepad;
 }
 
-void Brick::wait(int const &milliseconds) const
+void Brick::wait(int milliseconds)
 {
-	SleeperThread::msleep(milliseconds);
+	qDebug() << "wait" << milliseconds;
+
+	mWaitingTimer.start(milliseconds);
+	mWaitingEventLoop.exec();
 }
 
 qint64 Brick::time() const
@@ -305,3 +312,13 @@ void Brick::resetEventDrivenMode()
 	mInEventDrivenMode = false;
 }
 
+void Brick::stopWaiting()
+{
+	qDebug() << "stopWaiting";
+
+	mWaitingTimer.stop();
+
+	if (mWaitingEventLoop.isRunning()) {
+		mWaitingEventLoop.exit();
+	}
+}

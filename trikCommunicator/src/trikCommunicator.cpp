@@ -23,7 +23,7 @@
 using namespace trikCommunicator;
 
 TrikCommunicator::TrikCommunicator(QString const &configFilePath)
-	: mConnection(new QTcpSocket())
+	: mConnection(NULL)
 	, mRunner(new trikScriptRunner::TrikScriptRunner(configFilePath))
 	, mOwnsRunner(true)
 	, mExecutionState(idle)
@@ -32,7 +32,7 @@ TrikCommunicator::TrikCommunicator(QString const &configFilePath)
 }
 
 TrikCommunicator::TrikCommunicator(trikScriptRunner::TrikScriptRunner &runner)
-	: mConnection(new QTcpSocket())
+	: mConnection(NULL)
 	, mRunner(&runner)
 	, mOwnsRunner(false)
 	, mExecutionState(idle)
@@ -42,6 +42,8 @@ TrikCommunicator::TrikCommunicator(trikScriptRunner::TrikScriptRunner &runner)
 
 TrikCommunicator::~TrikCommunicator()
 {
+	qDebug() << "~TrikCommunicator();";
+
 	delete mConnection;
 	if (mOwnsRunner) {
 		delete mRunner;
@@ -80,30 +82,58 @@ void TrikCommunicator::writeToFile(QString const &fileName, QString const &conte
 
 void TrikCommunicator::listen(int const &port)
 {
+	qDebug() << "listen();";
+
 	connect(&mServer, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
 	mServer.listen(QHostAddress::Any, port);
 }
 
 void TrikCommunicator::onNewConnection()
 {
-	qDebug() << "New connection";
+	qDebug() << "onNewConnection();";
 
-	delete mConnection;
-	mConnection = mServer.nextPendingConnection();
-	connect(mConnection, SIGNAL(disconnected()), this, SLOT(onDisconnected()));
-	connect(mConnection, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+	if (!mConnection) {
+		qDebug() << "New connection";
+
+		mConnection = mServer.nextPendingConnection();
+
+		qDebug() << mConnection;
+
+		if (mConnection) {
+			connect(mConnection, SIGNAL(disconnected()), this, SLOT(onDisconnected()));
+			connect(mConnection, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+
+			qDebug() << "connects done";
+
+			if (mConnection->bytesAvailable() > 0) {
+				onReadyRead();
+			}
+		}
+	}
+
+	qDebug() << "done onNewConnection();";
 }
 
 void TrikCommunicator::onDisconnected()
 {
 	qDebug() << "Disconnected";
 
-	mConnection->disconnectFromHost();
+	if (mConnection) {
+		mConnection->deleteLater();
+		mConnection = NULL;
+	}
+
+	if (mServer.hasPendingConnections()) {
+		onNewConnection();
+	}
 }
 
 void TrikCommunicator::onReadyRead()
 {
-	if (!mConnection->isValid()) {
+	qDebug() << "onReadyRead();";
+	qDebug() << mConnection;
+
+	if (!mConnection || !mConnection->isValid()) {
 		return;
 	}
 
@@ -143,10 +173,14 @@ void TrikCommunicator::onReadyRead()
 		mExecutionState = running;
 		mRunner->run(command);
 	}
+
+	qDebug() << "done onReadyRead";
 }
 
 void TrikCommunicator::onScriptExecutionCompleted()
 {
+	qDebug() << "onScriptExecutionCompleted();";
+
 	if (mExecutionState == running) {
 		mExecutionState = stopping;
 		mRunner->run("brick.stop()");

@@ -19,6 +19,8 @@
 #include <QtCore/QThread>
 #include <QtCore/QHash>
 #include <QtCore/QStringList>
+#include <QtCore/QEventLoop>
+#include <QtCore/QTimer>
 
 #include "declSpec.h"
 
@@ -111,7 +113,7 @@ public slots:
 	Gamepad *gamepad();
 
 	/// Waits given amount of time in milliseconds and returns.
-	void wait(int const &milliseconds) const;
+	void wait(int milliseconds);
 
 	/// Returns the number of milliseconds since 1970-01-01T00:00:00 UTC.
 	qint64 time() const;
@@ -135,16 +137,10 @@ signals:
 	/// Emitted when script requested system to abort execution.
 	void quitSignal();
 
-private:
-	class SleeperThread : public QThread
-	{
-	public:
-		static void msleep(unsigned long msecs)
-		{
-			QThread::msleep(msecs);
-		}
-	};
+private slots:
+	void stopWaiting();
 
+private:
 	Sensor3d *mAccelerometer;  // has ownership.
 	Sensor3d *mGyroscope;  // has ownership.
 	Battery *mBattery;  // Has ownership.
@@ -166,6 +162,12 @@ private:
 	/// True, if a system is in event-driven running mode, so it shall wait for events when script is executed.
 	/// If it is false, script will exit immediately.
 	bool mInEventDrivenMode;
+
+	/// Internal event loop for "wait" method.
+	QEventLoop mWaitingEventLoop;
+
+	/// Timer that actually counts time in "wait" method.
+	QTimer mWaitingTimer;
 };
 
 }
