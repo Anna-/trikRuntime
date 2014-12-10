@@ -40,9 +40,14 @@ class RunningWidget : public MainWidget
 
 public:
 	explicit RunningWidget(QString const &programName, Controller &controller, QWidget *parent = 0);
+	~RunningWidget();
 
 	void showError(QString const &error);
 	void renewFocus() override;
+
+public slots:
+	void showGraphicsWidget(trikControl::GraphicsWidget* widget);
+	void showOriginWidget();
 
 protected:
 	void keyPressEvent(QKeyEvent *event);
@@ -51,6 +56,7 @@ private:
 	QVBoxLayout mLayout;
 	QLabel mStatusLabel;
 	QLabel mAbortLabel;
+	trikControl::GraphicsWidget &mGraphicsWidget;
 	Controller &mController;
 };
 

@@ -25,6 +25,12 @@ GraphicsWidget::GraphicsWidget()
 {
 }
 
+void GraphicsWidget::specialHide()
+{
+	hide();
+	emit hideGraphicsWidget();
+}
+
 void GraphicsWidget::paintEvent(QPaintEvent *paintEvent)
 {
 	Q_UNUSED(paintEvent)

@@ -36,6 +36,7 @@ GuiWorker::GuiWorker()
 
 void GuiWorker::init()
 {
+	qDebug() << "GuiWorker::init";
 	mImageLabel.reset(new QLabel());
 	mImageWidget.reset(new GraphicsWidget());
 	mFontMetrics.reset(new QFontMetrics(mImageWidget->font()));
@@ -47,6 +48,8 @@ void GuiWorker::init()
 	mImageWidget->setWindowState(Qt::WindowFullScreen);
 	mImageWidget->setWindowFlags(mImageWidget->windowFlags() | Qt::WindowStaysOnTopHint);
 	resetBackground();
+
+	emit addedGraphicsWidget(mImageWidget.data());
 }
 
 void GuiWorker::showImage(QString const &fileName)
@@ -163,7 +166,7 @@ void GuiWorker::clear()
 	mImageWidget->deleteAllItems();
 	mImageWidget->setPainterColor("black");
 	mImageWidget->setPainterWidth(1);
-	mImageWidget->hide();
+	mImageWidget->specialHide();
 	removeLabels();
 	mImageLabel->setPixmap(QPixmap());
 	resetBackground();
@@ -171,7 +174,7 @@ void GuiWorker::clear()
 
 void GuiWorker::hide()
 {
-	mImageWidget->hide();
+	mImageWidget->specialHide();
 }
 
 QLabel *GuiWorker::findLabel(int x, int y) const

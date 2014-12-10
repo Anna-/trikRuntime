@@ -21,6 +21,9 @@
 
 #include "mainWidget.h"
 
+namespace trikControl {
+class GraphicsWidget;
+}
 namespace trikGui
 {
 

@@ -171,6 +171,8 @@ signals:
 	/// deferred deinitialization (no video sensors are on, for example), signal will NOT be emitted.
 	void stopped();
 
+	void addedGraphicsWidget(GraphicsWidget* widget);
+
 private:
 	Sensor3d *mAccelerometer = nullptr;  // has ownership.
 	Sensor3d *mGyroscope = nullptr;  // has ownership.

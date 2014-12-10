@@ -18,10 +18,12 @@
 #include <QtCore/QString>
 
 #include "declSpec.h"
+//#include "src/graphicsWidget.h"
 
 namespace trikControl {
 
 class GuiWorker;
+class GraphicsWidget;
 
 /// Provides ability to draw something on robot display.
 class TRIKCONTROL_EXPORT Display : public QObject
@@ -103,6 +105,9 @@ public slots:
 
 	/// Clear everything painted with this object.
 	void clear();
+
+signals:
+	void addedGraphicsWidget(GraphicsWidget* widget);
 
 private:
 	QThread &mGuiThread;

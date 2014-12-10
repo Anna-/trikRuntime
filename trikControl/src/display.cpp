@@ -22,6 +22,7 @@
 	#include <QtWidgets/QLabel>
 	#include <QtWidgets/QPushButton>
 #endif
+#include <QDebug>
 
 #include "src/guiWorker.h"
 
@@ -33,6 +34,8 @@ Display::Display(QThread &guiThread, const QString &startDirPath)
 	, mGuiWorker(new GuiWorker())
 {
 	mGuiWorker->moveToThread(&guiThread);
+	connect(mGuiWorker, SIGNAL(addedGraphicsWidget(GraphicsWidget*)), this, SIGNAL(addedGraphicsWidget(GraphicsWidget*)));
+	qDebug() << "Display::Display";
 	QMetaObject::invokeMethod(mGuiWorker, "init");
 }
 

@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <QtCore/qglobal.h>
+
 #include <QtCore/QList>
 #include <QtCore/QPoint>
 #include <QtCore/QRect>
@@ -30,8 +32,12 @@ namespace trikControl {
 /// Class of graphic widget.
 class GraphicsWidget : public QWidget
 {
+	Q_OBJECT
+
 public:
 	GraphicsWidget();
+
+	void specialHide();
 
 	/// Set painter color.
 	void setPainterColor(QString const &color);
@@ -79,6 +85,9 @@ public:
 
 	/// Returns current pen color.
 	QColor currentPenColor() const;
+
+signals:
+	void hideGraphicsWidget();
 
 private:
 	/// Information about point.

@@ -113,6 +113,9 @@ public slots:
 	/// Initializes widget. Shall be called when widget is moved to correct thread. Not supposed to be called from .qts.
 	void init();
 
+signals:
+	void addedGraphicsWidget(GraphicsWidget* widget);
+
 private:
 	void resetBackground();
 

@@ -123,6 +123,7 @@ void Controller::scriptExecutionCompleted(QString const &error, int scriptId)
 
 void Controller::scriptExecutionFromFileStarted(QString const &fileName, int scriptId)
 {
+	qDebug() << "Controller::scriptExecutionFromFileStarted : " << fileName << scriptId;
 	if (mRunningWidgets.value(scriptId, nullptr)) {
 		emit closeRunningWidget(*mRunningWidgets[scriptId]);
 		delete mRunningWidgets[scriptId];
@@ -130,6 +131,7 @@ void Controller::scriptExecutionFromFileStarted(QString const &fileName, int scr
 	}
 
 	mRunningWidgets[scriptId] = new RunningWidget(fileName, *this);
+	connect(&mBrick, SIGNAL(addedGraphicsWidget(trikControl::GraphicsWidget*)), mRunningWidgets[scriptId], SLOT(showGraphicsWidget(trikControl::GraphicsWidget*));
 	emit addRunningWidget(*mRunningWidgets[scriptId]);
 
 	// After executing, a script will open a widget for painting with trikControl::Display.
