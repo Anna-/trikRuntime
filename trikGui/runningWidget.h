@@ -31,6 +31,7 @@
 
 #include "controller.h"
 #include "mainWidget.h"
+#include "../trikControl/src/graphicsWidget.h"
 
 namespace trikGui {
 
@@ -56,7 +57,7 @@ private:
 	QVBoxLayout mLayout;
 	QLabel mStatusLabel;
 	QLabel mAbortLabel;
-	trikControl::GraphicsWidget &mGraphicsWidget;
+	trikControl::GraphicsWidget* mGraphicsWidget;
 	Controller &mController;
 };
 

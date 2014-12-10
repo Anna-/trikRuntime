@@ -131,7 +131,8 @@ void Controller::scriptExecutionFromFileStarted(QString const &fileName, int scr
 	}
 
 	mRunningWidgets[scriptId] = new RunningWidget(fileName, *this);
-	connect(&mBrick, SIGNAL(addedGraphicsWidget(trikControl::GraphicsWidget*)), mRunningWidgets[scriptId], SLOT(showGraphicsWidget(trikControl::GraphicsWidget*));
+	connect(&mBrick, SIGNAL(addedGraphicsWidget(trikControl::GraphicsWidget*)), mRunningWidgets[scriptId]
+	, SLOT(showGraphicsWidget(trikControl::GraphicsWidget*)));
 	emit addRunningWidget(*mRunningWidgets[scriptId]);
 
 	// After executing, a script will open a widget for painting with trikControl::Display.

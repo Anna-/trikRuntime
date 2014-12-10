@@ -32,6 +32,7 @@ RunningWidget::RunningWidget(QString const &programName, Controller &controller,
 	mAbortLabel.setAlignment(Qt::AlignCenter);
 	mAbortLabel.setText(tr("Press Power to abort"));
 
+	mGraphicsWidget = new trikControl::GraphicsWidget();
 	showOriginWidget();
 }
 
@@ -68,7 +69,7 @@ void RunningWidget::renewFocus()
 
 void RunningWidget::showOriginWidget()
 {
-	mLayout.removeWidget(&mGraphicsWidget);
+	mLayout.removeWidget(mGraphicsWidget);
 
 	mLayout.addWidget(&mStatusLabel);
 	mLayout.addWidget(&mAbortLabel);
@@ -84,7 +85,7 @@ void RunningWidget::showGraphicsWidget(trikControl::GraphicsWidget* widget)
 	mLayout.removeWidget(&mStatusLabel);
 	mLayout.removeWidget(&mAbortLabel);
 
-	mLayout.addWidget(&mGraphicsWidget);
+	mLayout.addWidget(mGraphicsWidget);
 
 	setLayout(&mLayout);
 }
