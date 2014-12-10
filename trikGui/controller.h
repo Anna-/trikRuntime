@@ -24,6 +24,7 @@
 namespace trikControl {
 class GraphicsWidget;
 }
+
 namespace trikGui
 {
 

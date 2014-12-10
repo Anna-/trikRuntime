@@ -17,6 +17,7 @@
 #include <QtGui/QKeyEvent>
 
 using namespace trikGui;
+using namespace trikControl;
 
 RunningWidget::RunningWidget(QString const &programName, Controller &controller, QWidget *parent)
 	: MainWidget(parent)
@@ -32,7 +33,7 @@ RunningWidget::RunningWidget(QString const &programName, Controller &controller,
 	mAbortLabel.setAlignment(Qt::AlignCenter);
 	mAbortLabel.setText(tr("Press Power to abort"));
 
-	mGraphicsWidget = new trikControl::GraphicsWidget();
+	mGraphicsWidget = new GraphicsWidget();
 	showOriginWidget();
 }
 
@@ -69,6 +70,7 @@ void RunningWidget::renewFocus()
 
 void RunningWidget::showOriginWidget()
 {
+	qDebug() << "RunningWidget::showOriginWidget()";
 	mLayout.removeWidget(mGraphicsWidget);
 
 	mLayout.addWidget(&mStatusLabel);
@@ -77,8 +79,9 @@ void RunningWidget::showOriginWidget()
 	setLayout(&mLayout);
 }
 
-void RunningWidget::showGraphicsWidget(trikControl::GraphicsWidget* widget)
+void RunningWidget::showGraphicsWidget(GraphicsWidget* widget)
 {
+	qDebug() << "RunningWidget::showGraphicsWidget()";
 	mGraphicsWidget = widget;
 	connect(mGraphicsWidget, SIGNAL(hideGraphicsWidget()), this, SLOT(showOriginWidget()));
 
@@ -88,4 +91,6 @@ void RunningWidget::showGraphicsWidget(trikControl::GraphicsWidget* widget)
 	mLayout.addWidget(mGraphicsWidget);
 
 	setLayout(&mLayout);
+	update();
+	show();
 }

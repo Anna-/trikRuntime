@@ -33,6 +33,9 @@
 #include "mainWidget.h"
 #include "../trikControl/src/graphicsWidget.h"
 
+namespace trikControl {
+class GraphicsWidget;
+}
 namespace trikGui {
 
 class RunningWidget : public MainWidget

@@ -34,7 +34,7 @@ Display::Display(QThread &guiThread, const QString &startDirPath)
 	, mGuiWorker(new GuiWorker())
 {
 	mGuiWorker->moveToThread(&guiThread);
-	connect(mGuiWorker, SIGNAL(addedGraphicsWidget(GraphicsWidget*)), this, SIGNAL(addedGraphicsWidget(GraphicsWidget*)));
+	connect(mGuiWorker, SIGNAL(addedGraphicsWidget(trikControl::GraphicsWidget*)), this, SIGNAL(addedGraphicsWidget(trikControl::GraphicsWidget*)));
 	qDebug() << "Display::Display";
 	QMetaObject::invokeMethod(mGuiWorker, "init");
 }

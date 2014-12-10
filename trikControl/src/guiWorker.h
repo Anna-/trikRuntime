@@ -114,7 +114,7 @@ public slots:
 	void init();
 
 signals:
-	void addedGraphicsWidget(GraphicsWidget* widget);
+	void addedGraphicsWidget(trikControl::GraphicsWidget* widget);
 
 private:
 	void resetBackground();

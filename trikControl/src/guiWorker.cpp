@@ -49,7 +49,7 @@ void GuiWorker::init()
 	mImageWidget->setWindowFlags(mImageWidget->windowFlags() | Qt::WindowStaysOnTopHint);
 	resetBackground();
 
-	emit addedGraphicsWidget(mImageWidget.data());
+	//emit addedGraphicsWidget(mImageWidget.data());
 }
 
 void GuiWorker::showImage(QString const &fileName)
@@ -61,7 +61,8 @@ void GuiWorker::showImage(QString const &fileName)
 	}
 
 	mImageLabel->setPixmap(mImagesCache.value(fileName));
-	mImageWidget->show();
+	//mImageWidget->show();
+	emit addedGraphicsWidget(mImageWidget.data());
 }
 
 void GuiWorker::addLabel(QString const &text, int x, int y)
@@ -80,7 +81,8 @@ void GuiWorker::addLabel(QString const &text, int x, int y)
 		mLabels.insertMulti(x ^ y, label);
 	}
 
-	mImageWidget->show();
+	//mImageWidget->show();
+	emit addedGraphicsWidget(mImageWidget.data());
 }
 
 void GuiWorker::removeLabels()
@@ -141,7 +143,8 @@ void GuiWorker::setBackground(QString const &color)
 	}
 
 	mImageWidget->setPalette(palette);
-	mImageWidget->show();
+	//mImageWidget->show();
+	emit addedGraphicsWidget(mImageWidget.data());
 }
 
 void GuiWorker::resetBackground()
@@ -192,33 +195,38 @@ void GuiWorker::drawPoint(int x, int y)
 {
 	mImageWidget->drawPoint(x, y);
 	mImageWidget->update();
-	mImageWidget->show();
+	//mImageWidget->show();
+	emit addedGraphicsWidget(mImageWidget.data());
 }
 
 void GuiWorker::drawLine(int x1, int y1, int x2, int y2)
 {
 	mImageWidget->drawLine(x1, y1, x2, y2);
 	mImageWidget->update();
-	mImageWidget->show();
+	//mImageWidget->show();
+	emit addedGraphicsWidget(mImageWidget.data());
 }
 
 void GuiWorker::drawRect(int x, int y, int width, int height)
 {
 	mImageWidget->drawRect(x, y, width, height);
 	mImageWidget->update();
-	mImageWidget->show();
+	//mImageWidget->show();
+	emit addedGraphicsWidget(mImageWidget.data());
 }
 
 void GuiWorker::drawEllipse(int x, int y, int width, int height)
 {
 	mImageWidget->drawEllipse(x, y, width, height);
 	mImageWidget->update();
-	mImageWidget->show();
+	//mImageWidget->show();
+	emit addedGraphicsWidget(mImageWidget.data());
 }
 
 void GuiWorker::drawArc(int x, int y, int width, int height, int startAngle, int spanAngle)
 {
 	mImageWidget->drawArc(x, y, width, height, startAngle, spanAngle);
 	mImageWidget->update();
-	mImageWidget->show();
+	//mImageWidget->show();
+	emit addedGraphicsWidget(mImageWidget.data());
 }

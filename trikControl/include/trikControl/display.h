@@ -107,7 +107,7 @@ public slots:
 	void clear();
 
 signals:
-	void addedGraphicsWidget(GraphicsWidget* widget);
+	void addedGraphicsWidget(trikControl::GraphicsWidget* widget);
 
 private:
 	QThread &mGuiThread;

@@ -41,7 +41,7 @@ Brick::Brick(QThread &guiThread, QString const &configFilePath, const QString &s
 {
 	qDebug() << "Brick::Brick";
 
-	QObject::connect(&mDisplay, SIGNAL(addedGraphicsWidget(GraphicsWidget*)), this, SIGNAL(addedGraphicsWidget(GraphicsWidget*)));
+	QObject::connect(&mDisplay, SIGNAL(addedGraphicsWidget(trikControl::GraphicsWidget*)), this, SIGNAL(addedGraphicsWidget(trikControl::GraphicsWidget*)));
 	qRegisterMetaType<QVector<int>>("QVector<int>");
 
 	if (::system(mConfigurer->initScript().toStdString().c_str()) != 0) {
