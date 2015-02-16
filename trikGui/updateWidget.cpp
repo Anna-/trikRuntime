@@ -12,9 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include <QtCore/QProcess>
 #include <QsLog.h>
 #include <QtCore/QTimer>
+#include <QtGui/QKeyEvent>
 
 #include "updateWidget.h"
 
@@ -31,6 +31,10 @@ UpdateWidget::UpdateWidget(QWidget *parent)
 
 	mLayout.addWidget(&mStatusLabel);
 
+	mCancelButton = new QPushButton("Cancel");
+	mLayout.addWidget(mCancelButton);
+	mCancelButton->setDefault(true);
+
 	setLayout(&mLayout);
 	setFocusPolicy(Qt::StrongFocus);
 }
@@ -46,6 +50,26 @@ void UpdateWidget::renewFocus()
 QString UpdateWidget::menuEntry()
 {
 	return QString(tr("Update"));
+}
+
+void UpdateWidget::keyPressEvent(QKeyEvent *event)
+{
+	switch (event->key()) {
+		case Qt::Key_Return: {
+			cancelUpdating();
+			break;
+		}
+		default: {
+			TrikGuiDialog::keyPressEvent(event);
+			break;
+		}
+	}
+}
+
+void UpdateWidget::cancelUpdating()
+{
+	mUpdateCommand.kill();
+	mUpgradeCommand.kill();
 }
 
 void UpdateWidget::showStatus(QString const &text, bool isError)
@@ -70,16 +94,14 @@ int UpdateWidget::exec()
 
 	QLOG_INFO() << "Running: " << "opkg update";
 	qDebug() << "Running:" << "opkg update";
-	QProcess updateCommand;
-	updateCommand.start("opkg update");
-	bool update = updateCommand.waitForFinished();
+	mUpdateCommand.start("opkg update");
+	bool update = mUpdateCommand.waitForFinished();
 
 	if (update) {
 		QLOG_INFO() << "Running: " << "opkg upgrade";
 		qDebug() << "Running:" << "opkg upgrade";
-		QProcess upgradeCommand;
-		upgradeCommand.start("opkg upgrade");
-		bool upgrade = upgradeCommand.waitForFinished(100000);
+		mUpgradeCommand.start("opkg upgrade");
+		bool upgrade = mUpgradeCommand.waitForFinished(100000);
 
 		if (upgrade) {
 			showStatus(tr("Update and Upgrade is successfully finished"));

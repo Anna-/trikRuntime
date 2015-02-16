@@ -15,15 +15,18 @@
 #pragma once
 
 #include <QtCore/qglobal.h>
+#include <QtCore/QProcess>
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	#include <QtGui/QWidget>
 	#include <QtGui/QHBoxLayout>
 	#include <QtGui/QLabel>
+	#include <QtGui/QPushButton>
 #else
 	#include <QtWidgets/QWidget>
 	#include <QtWidgets/QHBoxLayout>
 	#include <QtWidgets/QLabel>
+	#include <QtWidgets/QPushButton>
 #endif
 
 #include "trikGuiDialog.h"
@@ -51,13 +54,20 @@ public:
 public slots:
 	void renewFocus() override;
 
+protected:
+	void keyPressEvent(QKeyEvent *event) override;
+
 private:
 	void showStatus(QString const &text, bool isError = false);
+	void cancelUpdating();
 
 	/// Main layout of this widget.
 	QHBoxLayout mLayout;
 
 	QLabel mStatusLabel;
+	QPushButton *mCancelButton; // Has ownership.
+	QProcess mUpdateCommand;
+	QProcess mUpgradeCommand;
 };
 
 }
