@@ -56,6 +56,7 @@ void UpdateWidget::keyPressEvent(QKeyEvent *event)
 {
 	switch (event->key()) {
 		case Qt::Key_Return: {
+		qDebug() << "Qt::Key_Return";
 			cancelUpdating();
 			break;
 		}
@@ -68,6 +69,7 @@ void UpdateWidget::keyPressEvent(QKeyEvent *event)
 
 void UpdateWidget::cancelUpdating()
 {
+	qDebug() << "cancelUpdating";
 	mUpdateCommand.kill();
 	mUpgradeCommand.kill();
 }
@@ -94,13 +96,14 @@ int UpdateWidget::exec()
 
 	QLOG_INFO() << "Running: " << "opkg update";
 	qDebug() << "Running:" << "opkg update";
-	mUpdateCommand.start("opkg update");
+	mUpdateCommand.startDetached("opkg update");
+
 	bool update = mUpdateCommand.waitForFinished();
 
 	if (update) {
 		QLOG_INFO() << "Running: " << "opkg upgrade";
 		qDebug() << "Running:" << "opkg upgrade";
-		mUpgradeCommand.start("opkg upgrade");
+		mUpgradeCommand.startDetached("opkg upgrade");
 		bool upgrade = mUpgradeCommand.waitForFinished(100000);
 
 		if (upgrade) {
